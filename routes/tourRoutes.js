@@ -3,6 +3,11 @@ const express = require('express');
 const router = express.Router();
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
+const reviewRouter = require('./reviewRoutes');
+
+// GET   /tour/12354/reviews
+// POST  /tour/12354/reviews
+router.use('/:tourId/reviews', reviewRouter);
 
 // ignored if there is not id provided
 // router.param('id', tourController.checkID);
