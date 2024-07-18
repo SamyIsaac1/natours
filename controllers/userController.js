@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const factory = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -48,41 +49,43 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
-
 exports.createUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'the route is not yet defined!' });
+  res.status(500).json({
+    status: 'error',
+    message: 'the route is not yet defined!.Please use /signup instead',
+  });
 };
 
-exports.getUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'the route is not yet defined!' });
-};
+exports.getAllUsers = factory.getAll(User);
+exports.getUser = factory.getOne(User);
 
-exports.updateUser = (req, res) => {
-  res
-    .status(500)
-    .json({ status: 'error', message: 'the route is not yet defined!' });
-};
+// Do Not update passwords with this
+exports.updateUser = factory.updateOne(User);
+exports.deleteUser = factory.deleteOne(User);
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const user = await User.findByIdAndDelete(id);
+// exports.getAllUsers = catchAsync(async (req, res, next) => {
+//   const users = await User.find();
 
-  if (!user) return next(new AppError('no user found with that ID', 404));
+//   res.status(200).json({
+//     status: 'success',
+//     results: users.length,
+//     data: {
+//       users,
+//     },
+//   });
+// });
 
-  res.status(204).json({ status: 'success', data: null });
-});
+// exports.updateUser = (req, res) => {
+//   res
+//     .status(500)
+//     .json({ status: 'error', message: 'the route is not yet defined!' });
+// };
+
+// exports.deleteUser = catchAsync(async (req, res, next) => {
+//   const { id } = req.params;
+//   const user = await User.findByIdAndDelete(id);
+
+//   if (!user) return next(new AppError('no user found with that ID', 404));
+
+//   res.status(204).json({ status: 'success', data: null });
+// });
