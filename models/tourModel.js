@@ -120,6 +120,14 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+// Improve read performance with indexes
+// single field index
+// tourSchema.index({ price: 1 });
+
+// Compound Field index
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 // Virtual populate
 tourSchema.virtual('reviews', {
   ref: 'Review',
