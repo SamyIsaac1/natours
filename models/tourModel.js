@@ -120,28 +120,28 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-// Improve read performance with indexes
-// single field index
+//? Improve read performance with indexes
+// 1) Single field index
 // tourSchema.index({ price: 1 });
-
-// Compound Field index
-tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
 
-// Virtual populate
+// 2) Compound Field index
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+
+//? Virtual populate
 tourSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
   localField: '_id',
 });
 
-// DOCUMENT MIDDLEWARE: runs before .save() and .create()
+//? DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
-// Embedding
+//? Embedding
 // tourSchema.pre('save', async function (next) {
 //   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
 //   this.guides = await Promise.all(guidesPromises);
@@ -159,7 +159,7 @@ tourSchema.pre('save', function (next) {
 //   next();
 // });
 
-// QUERY MIDDLEWARE
+//? QUERY MIDDLEWARE
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
 
@@ -180,7 +180,7 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
-// AGGREGATION MIDDLEWARE
+//? AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
