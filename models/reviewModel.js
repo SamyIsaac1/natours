@@ -12,6 +12,7 @@ const reviewSchema = new mongoose.Schema(
       default: 4.5,
       min: [1, 'Rating must be above 1'],
       max: [5, 'Rating must be below 5'],
+      set: (val) => Math.round(val * 10) / 10,
     },
     createdAt: {
       type: Date,
@@ -45,6 +46,9 @@ const reviewSchema = new mongoose.Schema(
 
 //   next();
 // });
+
+// User can only review one time to a tour
+reviewSchema.index({ user: 1, tour: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
