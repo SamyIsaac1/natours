@@ -27,8 +27,23 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
   // 2) Build template
   // 3) Render template using data from 1)
-  res.status(200).render('tour', {
-    title: `${tour.name} Tour`,
-    tour,
-  });
+  res
+    .status(200)
+    .set('Content-Security-Policy', "connect-src 'self' https://unpkg.com")
+    .render('tour', {
+      title: `${tour.name} Tour`,
+      tour,
+    });
+});
+
+exports.getLoginForm = catchAsync(async (req, res, next) => {
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com",
+    )
+    .render('login', {
+      title: 'Log into account',
+    });
 });
