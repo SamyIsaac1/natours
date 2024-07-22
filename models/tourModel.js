@@ -129,7 +129,7 @@ tourSchema.index({ slug: 1 });
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ startLocation: '2dsphere' });
 
-//? Virtual populate
+//? Virtual populate (reviews:[...tourIds] without saving it to db and can populate later)
 tourSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
