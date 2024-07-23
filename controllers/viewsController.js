@@ -11,7 +11,13 @@ exports.getOverview = catchAsync(async (req, res) => {
   // 2) Build template
 
   // 3) Render that template using tour data from 1
-  res.status(200).render('overview', { title: 'All Tours', tours });
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com",
+    )
+    .render('overview', { title: 'All Tours', tours });
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
