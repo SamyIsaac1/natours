@@ -53,3 +53,15 @@ exports.getLoginForm = catchAsync(async (req, res, next) => {
       title: 'Log into account',
     });
 });
+
+exports.getAccount = (req, res) => {
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com",
+    )
+    .render('account', {
+      title: 'Your account',
+    });
+};
